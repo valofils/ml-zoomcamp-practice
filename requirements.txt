@@ -1,0 +1,29 @@
+# Core data
+numpy==2.4.6
+pandas==2.2.3
+
+# Visualization
+matplotlib==3.11.0
+seaborn==0.13.2
+
+# Machine learning
+scikit-learn==1.9.0
+xgboost==3.2.0
+
+# Deep learning
+tensorflow==2.21.0
+torch==2.12.0
+
+# Experiment tracking
+mlflow==3.13.0
+
+# Serving
+fastapi==0.137.1
+uvicorn==0.49.0
+bentoml==1.4.39
+
+# AWS serverless
+boto3==1.43.29
+
+# Utilities
+requests==2.34.2
