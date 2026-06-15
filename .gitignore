@@ -47,3 +47,7 @@ desktop.ini
 
 # Logs
 *.log
+
+# MLflow
+*.db
+mlruns/
