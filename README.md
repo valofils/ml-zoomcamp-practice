@@ -50,3 +50,6 @@ cd 02-regression
 python eda.py
 python train.py
 ```
+
+## TTableau Dashboard
+https://public.tableau.com/app/profile/mariel.ambratis.fils.andrianavalondrahona/viz/GlobalFoodPriceMonitorWFP2015-2024/Dashboard1?publish=yes
