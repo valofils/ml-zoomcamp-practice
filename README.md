@@ -21,13 +21,13 @@ analysts prioritise which markets to monitor more closely.
 
 ## Results (ROC AUC on the 2019+ validation set)
 
-| Model | ROC AUC |
-|---|---|
-| Logistic regression (baseline) | 0.603 |
-| Decision tree | 0.656 |
-| Random forest | 0.649 |
-| XGBoost | 0.684 |
-| Feedforward neural network (Keras, embedding layers) | **0.723** |
+| Model | ROC AUC | Served by |
+|---|---|---|
+| Logistic regression (baseline) | 0.603 | FastAPI (`05-deployment/`), AWS Lambda (`09-serverless/`) |
+| Decision tree | 0.656 | |
+| Random forest | 0.649 | |
+| XGBoost | 0.684 | |
+| Feedforward neural network (Keras, embedding layers) | **0.723** | BentoML (`10-serving/`) |
 
 ![Model comparison](08-deep-learning/plots/24_all_models_comparison.png)
 
