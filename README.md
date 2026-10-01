@@ -66,7 +66,7 @@ Download the WFP Global Food Prices dataset, save it as `data/wfpvam_foodprices.
 python 02-regression/eda.py          # builds data/wfp_maize_clean.csv
 python 03-classification/train.py
 python 06-trees/train_xgboost.py
-python 08-deep-learning/train_cnn.py
+python 08-deep-learning/train_nn.py
 ```
 
 ### Prediction API
