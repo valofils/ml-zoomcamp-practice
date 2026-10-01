@@ -58,8 +58,17 @@ print(f"\n[Best run] {best_run_name}  (AUC={best_auc:.4f})")
 # Only runs where we called mlflow.xgboost.log_model have an artifact
 # -----------------------------------------------------------------------------
 
-artifacts = [a.path for a in client.list_artifacts(best_run_id)]
-print(f"[Artifacts in best run] {artifacts}")
+# MLflow 3 stores models as LoggedModel entities, not run artifacts,
+# so we look them up by source run instead of listing artifacts.
+def logged_model_names(run_id):
+    models = client.search_logged_models(
+        experiment_ids=[experiment.experiment_id],
+        filter_string=f"source_run_id = '{run_id}'",
+    )
+    return [m.name for m in models]
+
+artifacts = logged_model_names(best_run_id)
+print(f"[Logged models in best run] {artifacts}")
 
 if "model" not in artifacts:
     print(f"\n[WARNING] Best run '{best_run_name}' has no logged model artifact.")
@@ -67,7 +76,7 @@ if "model" not in artifacts:
     for run in runs:
         name = run.data.tags.get("mlflow.runName", run.info.run_id[:8])
         if "xgboost" in name.lower():
-            arts = [a.path for a in client.list_artifacts(run.info.run_id)]
+            arts = logged_model_names(run.info.run_id)
             if "model" in arts:
                 best_run     = run
                 best_run_id  = run.info.run_id

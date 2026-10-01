@@ -99,7 +99,7 @@ def log_run(run_name, params, model, X_val, y_val, use_proba=True, log_model=Fal
         mlflow.log_metric("val_accuracy",round(acc, 4))
 
         if log_model and model_obj is not None:
-            mlflow.sklearn.log_model(model_obj, artifact_path="model")
+            mlflow.sklearn.log_model(model_obj, name="model")
 
         print(f"  [{run_name}] AUC={auc:.4f}  F1={f1:.4f}  ACC={acc:.4f}")
         return auc, f1
@@ -194,7 +194,7 @@ with mlflow.start_run(run_name="xgboost_d8_lr0.03_n95"):
     mlflow.log_metric("val_roc_auc",  round(auc, 4))
     mlflow.log_metric("val_f1",       round(f1, 4))
     mlflow.log_metric("val_accuracy", round(acc, 4))
-    mlflow.xgboost.log_model(xgb_model, artifact_path="model")
+    mlflow.xgboost.log_model(xgb_model, name="model")
 
     print(f"  [xgboost_d8_lr0.03_n95] AUC={auc:.4f}  F1={f1:.4f}  ACC={acc:.4f}")
 

@@ -22,6 +22,7 @@ from pydantic import BaseModel, Field
 import bentoml
 
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
+from tensorflow import keras
 
 PKL_FILE = os.path.join(os.path.dirname(__file__), "preprocessor.pkl")
 
@@ -54,18 +55,19 @@ class PriceAlertResponse(BaseModel):
 class MaizePriceAlertService:
 
     def __init__(self):
-        self._nn = bentoml.tensorflow.load_model("maize_price_nn:latest")
+        bento_model = bentoml.models.get("maize_price_nn:latest")
+        self._nn = keras.models.load_model(bento_model.path_of("nn_model.keras"))
         with open(PKL_FILE, "rb") as f:
             art = pickle.load(f)
         self._enc      = art["encoder"]
         self._cat_cols = art["cat_cols"]
         self._year_min = int(art["year_min"])
+        self._year_max = int(art["year_max"])
 
     def _build_input(self, req: PriceAlertRequest):
         month      = req.mp_month
-        year_norm  = float(req.mp_year - self._year_min) / 31.0
-        cat_raw    = pd.DataFrame([{c: getattr(req, c.replace("adm0", "adm0").replace("cur", "cur").replace("adm1", "adm1"))
-                                    for c in self._cat_cols}])
+        # same min-max scaling as 08-deep-learning/train_nn.py
+        year_norm  = float(req.mp_year - self._year_min) / (self._year_max - self._year_min)
         cat_raw    = pd.DataFrame([{
             "adm0_name": req.adm0_name,
             "cur_name":  req.cur_name,
