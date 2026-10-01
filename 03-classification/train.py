@@ -76,15 +76,15 @@ y_val   = val[TARGET]
 # -----------------------------------------------------------------------------
 
 preprocessor = ColumnTransformer(transformers=[
-    ("cat", OneHotEncoder(handle_unknown="ignore", sparse_output=False), CAT_FEATURES),
+    ("cat", OneHotEncoder(handle_unknown="ignore"), CAT_FEATURES),
     ("num", "passthrough", NUM_FEATURES),
 ])
 
 # -----------------------------------------------------------------------------
 # MODEL — LOGISTIC REGRESSION
 # C is the inverse of regularization strength (higher C = less regularization)
-# solver="saga" handles large sparse OHE matrices efficiently
-# max_iter=1000 ensures convergence with many categories
+# One-hot output stays sparse; lbfgs fits it quickly and converges for every C
+# (dense input with solver="saga" took ~20 minutes and did not always converge)
 # -----------------------------------------------------------------------------
 
 print("\n" + "=" * 55)
@@ -101,7 +101,7 @@ for C in [0.01, 0.1, 1.0, 10.0, 100.0]:
     pipe = Pipeline([
         ("preprocessor", preprocessor),
         ("model", LogisticRegression(
-            C=C, solver="saga", max_iter=1000, random_state=42
+            C=C, solver="lbfgs", max_iter=1000, random_state=42
         )),
     ])
     pipe.fit(X_train, y_train)

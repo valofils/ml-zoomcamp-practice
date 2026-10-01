@@ -152,12 +152,12 @@ X = df_full[CAT_FEATURES + NUM_FEATURES]
 y = df_full["high_price"]
 
 preprocessor = ColumnTransformer(transformers=[
-    ("cat", OneHotEncoder(handle_unknown="ignore", sparse_output=False), CAT_FEATURES),
+    ("cat", OneHotEncoder(handle_unknown="ignore"), CAT_FEATURES),
     ("num", "passthrough", NUM_FEATURES),
 ])
 pipe = Pipeline([
     ("preprocessor", preprocessor),
-    ("model", LogisticRegression(C=0.1, solver="saga", max_iter=1000, random_state=42)),
+    ("model", LogisticRegression(C=0.1, solver="lbfgs", max_iter=1000, random_state=42)),
 ])
 
 cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)

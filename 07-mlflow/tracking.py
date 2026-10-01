@@ -63,7 +63,7 @@ y_val       = val[TARGET]
 
 # Preprocessors
 ohe_pre = ColumnTransformer(transformers=[
-    ("cat", OneHotEncoder(handle_unknown="ignore", sparse_output=False), CAT_FEATURES),
+    ("cat", OneHotEncoder(handle_unknown="ignore"), CAT_FEATURES),
     ("num", "passthrough", NUM_FEATURES),
 ])
 ord_pre = ColumnTransformer(transformers=[
@@ -111,12 +111,12 @@ def log_run(run_name, params, model, X_val, y_val, use_proba=True, log_model=Fal
 print("\n[INFO] Logging Logistic Regression ...")
 lr_pipe = Pipeline([
     ("pre",   ohe_pre),
-    ("model", LogisticRegression(C=0.1, solver="saga", max_iter=1000, random_state=42)),
+    ("model", LogisticRegression(C=0.1, solver="lbfgs", max_iter=1000, random_state=42)),
 ])
 lr_pipe.fit(X_train_raw, y_train)
 log_run(
     run_name="logistic_regression_C0.1",
-    params={"model": "LogisticRegression", "C": 0.1, "solver": "saga",
+    params={"model": "LogisticRegression", "C": 0.1, "solver": "lbfgs",
             "encoding": "OneHot", "split_year": 2019},
     model=lr_pipe,
     X_val=X_val_raw,

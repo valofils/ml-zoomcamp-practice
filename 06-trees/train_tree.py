@@ -218,7 +218,7 @@ print(importance.round(4).to_string())
 print("\n" + "=" * 60)
 print("MODEL COMPARISON SUMMARY")
 print("=" * 60)
-logistic_auc = 0.6051   # from Module 04
+logistic_auc = 0.6031   # from Module 04
 best_dt_auc  = best_dt["auc"]
 best_rf_auc  = best_rf_row["auc"]
 best_xgb_auc = best_xgb["auc"]

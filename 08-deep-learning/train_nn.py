@@ -204,7 +204,7 @@ print("=" * 55)
 print("COMPARISON WITH PREVIOUS MODELS")
 print("=" * 55)
 comparison = {
-    "Logistic Regression": 0.6051,
+    "Logistic Regression": 0.6031,
     "Decision Tree":       0.6558,
     "Random Forest":       0.6494,
     "XGBoost":             0.6838,
