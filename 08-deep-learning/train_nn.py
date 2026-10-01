@@ -28,6 +28,12 @@ from tensorflow.keras import layers
 
 print(f"[INFO] TensorFlow version: {tf.__version__}")
 
+# Seed Python, NumPy and TensorFlow, and use deterministic ops,
+# so weight init, dropout and shuffling are the same on every run
+SEED = 42
+keras.utils.set_random_seed(SEED)
+tf.config.experimental.enable_op_determinism()
+
 # -----------------------------------------------------------------------------
 # PATHS
 # -----------------------------------------------------------------------------
