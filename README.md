@@ -23,7 +23,7 @@ analysts prioritise which markets to monitor more closely.
 
 | Model | ROC AUC |
 |---|---|
-| Logistic regression (baseline) | see `03-classification/` and `04-evaluation/` |
+| Logistic regression (baseline) | 0.603 |
 | XGBoost | 0.684 |
 | Feedforward neural network (Keras, embedding layers) | **0.723** |
 
