@@ -1,6 +1,5 @@
 service: "service:svc"
 name: maize-price-alert
-version: "1.0.0"
 
 description: >
   BentoML service for the WFP Maize Price Alert model.
@@ -15,6 +14,7 @@ labels:
 
 include:
   - "service.py"
+  - "preprocessor.pkl"
 
 python:
   packages:
