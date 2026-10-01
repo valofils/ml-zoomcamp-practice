@@ -5,7 +5,7 @@ description: >
   BentoML service for the WFP Maize Price Alert model.
   Predicts whether a maize retail market is in a high-price state
   relative to the country historical median.
-  Neural network with embedding layers. Val AUC = 0.745.
+  Neural network with embedding layers. Val AUC = 0.723.
 
 labels:
   owner: valofils

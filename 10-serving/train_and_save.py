@@ -65,8 +65,8 @@ print(f"[INFO] Model loaded. Parameters: {nn_model.count_params():,}")
 with bentoml.models.create(
     "maize_price_nn",
     metadata={
-        "val_roc_auc"  : 0.7448,
-        "val_f1"       : 0.7938,
+        "val_roc_auc"  : 0.7227,
+        "val_f1"       : 0.7892,
         "dataset"      : "WFP Global Food Prices (maize, 1992-2021)",
         "trained_by"   : "valofils",
         "architecture" : "Embedding + Dense + BatchNorm + Dropout",

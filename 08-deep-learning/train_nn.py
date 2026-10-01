@@ -207,7 +207,7 @@ comparison = {
     "Logistic Regression": 0.6051,
     "Decision Tree":       0.6558,
     "Random Forest":       0.6494,
-    "XGBoost":             0.6896,
+    "XGBoost":             0.6838,
     "Neural Network":      auc,
 }
 for name, score in comparison.items():
