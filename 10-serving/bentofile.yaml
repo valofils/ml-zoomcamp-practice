@@ -1,0 +1,25 @@
+service: "service:svc"
+name: maize-price-alert
+version: "1.0.0"
+
+description: >
+  BentoML service for the WFP Maize Price Alert model.
+  Predicts whether a maize retail market is in a high-price state
+  relative to the country historical median.
+  Neural network with embedding layers. Val AUC = 0.745.
+
+labels:
+  owner: valofils
+  dataset: WFP Global Food Prices
+  commodity: maize
+
+include:
+  - "service.py"
+
+python:
+  packages:
+    - tensorflow==2.21.0
+    - scikit-learn==1.9.0
+    - pandas==2.2.3
+    - numpy==2.4.6
+    - pydantic>=2.9.0
