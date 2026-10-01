@@ -24,6 +24,8 @@ analysts prioritise which markets to monitor more closely.
 | Model | ROC AUC |
 |---|---|
 | Logistic regression (baseline) | 0.603 |
+| Decision tree | 0.656 |
+| Random forest | 0.649 |
 | XGBoost | 0.684 |
 | Feedforward neural network (Keras, embedding layers) | **0.723** |
 
