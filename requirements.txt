@@ -12,7 +12,6 @@ xgboost==3.2.0
 
 # Deep learning
 tensorflow==2.21.0
-torch==2.12.0
 
 # Experiment tracking
 mlflow==3.13.0
