@@ -44,11 +44,12 @@ similarities between markets that one hot encoding misses.
 | `06-trees/` | Decision tree, random forest, XGBoost with early stopping and feature importance |
 | `07-mlflow/` | **MLflow** experiment tracking (SQLite backend) and model registry |
 | `08-deep-learning/` | Keras neural network with embeddings, training curves, comparison of all models |
-| `09-serverless/`, `10-serving/` | In progress: AWS Lambda and BentoML serving |
+| `09-serverless/` | In progress: AWS Lambda deployment |
+| `10-serving/` | **BentoML** service serving the neural network, with a request and response schema |
 
 ## Tech stack
 
-Python, pandas, NumPy, scikit-learn, XGBoost, TensorFlow/Keras, MLflow, FastAPI, Docker, matplotlib, seaborn.
+Python, pandas, NumPy, scikit-learn, XGBoost, TensorFlow/Keras, MLflow, FastAPI, BentoML, Docker, matplotlib, seaborn.
 
 ## How to run
 
@@ -84,6 +85,16 @@ curl -X POST http://localhost:8000/predict \
 ```
 
 The API returns the predicted class, its probability, and a readable label (`HIGH PRICE ALERT` or `Normal price level`).
+
+### BentoML service (neural network)
+
+```bash
+python 10-serving/train_and_save.py
+bentoml serve 10-serving/service.py:svc --reload
+```
+
+Then open http://localhost:3000 for the Swagger UI, or send the same JSON request as above to
+`http://localhost:3000/predict`.
 
 ### Experiment tracking
 
