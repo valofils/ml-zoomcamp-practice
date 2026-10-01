@@ -93,8 +93,24 @@ python 10-serving/train_and_save.py
 bentoml serve 10-serving/service.py:svc --reload
 ```
 
-Then open http://localhost:3000 for the Swagger UI, or send the same JSON request as above to
-`http://localhost:3000/predict`.
+Then open http://localhost:3000 for the Swagger UI, or send a request to `http://localhost:3000/predict`.
+The body is the same as above, wrapped in a `request` key:
+
+```bash
+curl -X POST http://localhost:3000/predict \
+  -H "Content-Type: application/json" \
+  -d '{"request":{"adm0_name":"Rwanda","cur_name":"RWF","adm1_name":"Kigali City","mp_year":2020,"mp_month":6}}'
+```
+
+To package the service and model into a deployable bento, then serve it:
+
+```bash
+bentoml build 10-serving --version 1.0.0
+bentoml serve maize-price-alert:1.0.0
+```
+
+The version is passed on the command line because BentoML 1.4 does not accept it in `bentofile.yaml`.
+`bentoml containerize maize-price-alert:1.0.0` turns the bento into a Docker image.
 
 ### Experiment tracking
 
