@@ -51,7 +51,7 @@ similarities between markets that one hot encoding misses.
 
 ## Tech stack
 
-Python, pandas, NumPy, scikit-learn, XGBoost, TensorFlow/Keras, MLflow, FastAPI, BentoML, Docker, matplotlib, seaborn.
+Python, pandas, NumPy, scikit-learn, XGBoost, TensorFlow/Keras, MLflow, FastAPI, BentoML, AWS Lambda, Docker, matplotlib, seaborn.
 
 ## How to run
 
