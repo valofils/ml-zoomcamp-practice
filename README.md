@@ -44,7 +44,7 @@ similarities between markets that one hot encoding misses.
 | `06-trees/` | Decision tree, random forest, XGBoost with early stopping and feature importance |
 | `07-mlflow/` | **MLflow** experiment tracking (SQLite backend) and model registry |
 | `08-deep-learning/` | Keras neural network with embeddings, training curves, comparison of all models |
-| `09-serverless/` | In progress: AWS Lambda deployment |
+| `09-serverless/` | **AWS Lambda** handler serving the logistic regression model, packaged as a container image |
 | `10-serving/` | **BentoML** service serving the neural network, with a request and response schema |
 
 ## Tech stack
@@ -111,6 +111,26 @@ bentoml serve maize-price-alert:1.0.0
 
 The version is passed on the command line because BentoML 1.4 does not accept it in `bentofile.yaml`.
 `bentoml containerize maize-price-alert:1.0.0` turns the bento into a Docker image.
+
+### Serverless (AWS Lambda)
+
+The Lambda function serves the logistic regression model from `05-deployment/` and accepts the same JSON as the
+FastAPI service, either directly or through API Gateway or a Lambda Function URL. Test the handler locally:
+
+```bash
+python 05-deployment/train.py        # creates the model the handler loads
+python 09-serverless/test.py
+```
+
+Build and run the container image with the Lambda runtime emulator (from the project root):
+
+```bash
+docker build -f 09-serverless/Dockerfile -t maize-price-lambda .
+docker run -p 9000:8080 maize-price-lambda
+python 09-serverless/test.py --url http://localhost:9000/2015-03-31/functions/function/invocations
+```
+
+To deploy, push the image to Amazon ECR and create a Lambda function from it.
 
 ### Experiment tracking
 
