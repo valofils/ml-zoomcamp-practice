@@ -20,7 +20,6 @@ DB_PATH = os.path.join(os.path.dirname(__file__), "mlflow.db")
 mlflow.set_tracking_uri(f"sqlite:///{os.path.abspath(DB_PATH)}")
 
 REGISTERED_NAME = "maize-price-alert-xgboost"
-YEAR_MIN        = 1990
 
 # The MLflow-logged XGBoost model is the raw booster — no preprocessor.
 # We load the preprocessor from the pickle artifact saved in Module 06.
@@ -42,6 +41,7 @@ print(f"[INFO] Loading preprocessor from: {ARTIFACT_FILE}")
 with open(ARTIFACT_FILE, "rb") as f:
     artifact = pickle.load(f)
 preprocessor = artifact["preprocessor"]
+YEAR_MIN     = artifact["year_min"]
 print("[INFO] Preprocessor loaded.")
 
 # -----------------------------------------------------------------------------

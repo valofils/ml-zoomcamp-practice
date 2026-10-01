@@ -106,7 +106,7 @@ client.update_registered_model(
     description=(
         "XGBoost classifier predicting whether a maize retail market is in a "
         "high-price state relative to the country's historical median. "
-        "Trained on WFP Global Food Prices data (1992–2018), "
+        "Trained on WFP Global Food Prices data (1992–2016), "
         "validated on 2019–2021."
     ),
 )

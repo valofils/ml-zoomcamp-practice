@@ -169,24 +169,38 @@ log_run(
 # RUN 4 — XGBoost (best from Module 06 early stopping)
 # -----------------------------------------------------------------------------
 
+# Best config from 06-trees/train_xgboost.py: trained on < 2017, with
+# early stopping on 2017–2018 picking 28 trees. Training the same 28 trees
+# here gives the same model, and the encoder is fit on the same years so it
+# matches the preprocessor saved in 05-deployment/model/xgb_pipeline.pkl
+# (which load_model.py pairs with the registered model).
 print("[INFO] Logging XGBoost ...")
-xgb_model = xgb.XGBClassifier(
-    max_depth=8, learning_rate=0.03, n_estimators=95,
-    subsample=0.8, colsample_bytree=0.7,
-    eval_metric="logloss", random_state=42, n_jobs=-1,
-)
-xgb_model.fit(X_train_ord, y_train)
+XGB_TRAIN_UNTIL = 2017
+xgb_train   = df[df["mp_year"] < XGB_TRAIN_UNTIL]
+xgb_pre     = ColumnTransformer(transformers=[
+    ("cat", OrdinalEncoder(handle_unknown="use_encoded_value", unknown_value=-1), CAT_FEATURES),
+    ("num", "passthrough", NUM_FEATURES),
+])
+X_xgb_train = xgb_pre.fit_transform(xgb_train[ALL_FEATURES])
+X_xgb_val   = xgb_pre.transform(X_val_raw)
 
-with mlflow.start_run(run_name="xgboost_d8_lr0.03_n95"):
+xgb_model = xgb.XGBClassifier(
+    max_depth=6, learning_rate=0.03, n_estimators=28,
+    subsample=0.9, colsample_bytree=0.8,
+    eval_metric="auc", random_state=42, n_jobs=-1,
+)
+xgb_model.fit(X_xgb_train, xgb_train[TARGET])
+
+with mlflow.start_run(run_name="xgboost_d6_lr0.03_n28"):
     params = {
-        "model": "XGBoost", "max_depth": 8, "learning_rate": 0.03,
-        "n_estimators": 95, "subsample": 0.8, "colsample_bytree": 0.7,
-        "encoding": "Ordinal", "split_year": 2019,
+        "model": "XGBoost", "max_depth": 6, "learning_rate": 0.03,
+        "n_estimators": 28, "subsample": 0.9, "colsample_bytree": 0.8,
+        "encoding": "Ordinal", "train_until": XGB_TRAIN_UNTIL, "split_year": 2019,
     }
     mlflow.log_params(params)
 
-    y_proba = xgb_model.predict_proba(X_val_ord)[:, 1]
-    y_pred  = xgb_model.predict(X_val_ord)
+    y_proba = xgb_model.predict_proba(X_xgb_val)[:, 1]
+    y_pred  = xgb_model.predict(X_xgb_val)
     auc     = roc_auc_score(y_val, y_proba)
     f1      = f1_score(y_val, y_pred)
     acc     = accuracy_score(y_val, y_pred)
@@ -196,7 +210,7 @@ with mlflow.start_run(run_name="xgboost_d8_lr0.03_n95"):
     mlflow.log_metric("val_accuracy", round(acc, 4))
     mlflow.xgboost.log_model(xgb_model, name="model")
 
-    print(f"  [xgboost_d8_lr0.03_n95] AUC={auc:.4f}  F1={f1:.4f}  ACC={acc:.4f}")
+    print(f"  [xgboost_d6_lr0.03_n28] AUC={auc:.4f}  F1={f1:.4f}  ACC={acc:.4f}")
 
 # -----------------------------------------------------------------------------
 # SUMMARY
