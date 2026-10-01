@@ -54,9 +54,11 @@ class PriceAlertResponse(BaseModel):
 )
 class MaizePriceAlertService:
 
+    # Declaring the model here makes `bentoml build` package it into the bento
+    bento_model = bentoml.models.BentoModel("maize_price_nn:latest")
+
     def __init__(self):
-        bento_model = bentoml.models.get("maize_price_nn:latest")
-        self._nn = keras.models.load_model(bento_model.path_of("nn_model.keras"))
+        self._nn = keras.models.load_model(self.bento_model.path_of("nn_model.keras"))
         with open(PKL_FILE, "rb") as f:
             art = pickle.load(f)
         self._enc      = art["encoder"]
